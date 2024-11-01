@@ -1,0 +1,13 @@
+[
+    {
+        "index": 0,
+        "previous_hash": "0",
+        "timestamp": 1721896883,
+        "data": [
+            "Genesis Block"
+        ],
+        "hash": "5538b31d6639b86acedf74c9c8828d3f1865326036d8e08c5dc4cd2447daffde",
+        "nonce": 0,
+        "merkle_root": "89eb0ac031a63d2421cd05a2fbe41f3ea35f5c3712ca839cbf6b85c4ee07b7a3"
+    }
+]

@@ -1,0 +1,59 @@
+/* MarkdownRenderer.css */
+
+/* Adjust font size for H1 headers */
+.markdown-content h1 {
+  font-size: 32px; /* Customize the font size */
+  font-weight: bold; /* Optionally adjust the font weight */
+}
+
+/* Adjust font size for H2 headers */
+.markdown-content h2 {
+  font-size: 28px; /* Customize the font size */
+  font-weight: bold; /* Optionally adjust the font weight */
+}
+
+/* Adjust font size for H3 headers */
+.markdown-content h3 {
+  font-size: 24px; /* Customize the font size */
+  font-weight: bold; /* Optionally adjust the font weight */
+}
+
+/* Adjust font size for H4 headers */
+.markdown-content h4 {
+  font-size: 20px; /* Customize the font size */
+  font-weight: bold; /* Optionally adjust the font weight */
+}
+
+/* Adjust font size for H5 headers */
+.markdown-content h5 {
+  font-size: 18px; /* Customize the font size */
+  font-weight: bold; /* Optionally adjust the font weight */
+}
+
+/* Adjust font size for H6 headers */
+.markdown-content h6 {
+  font-size: 16px; /* Customize the font size */
+  font-weight: bold; /* Optionally adjust the font weight */
+}
+
+/* Adjust font size for paragraph text */
+.markdown-content p {
+  font-size: 20px; /* Customize the font size */
+  line-height: 1.5; /* Adjust line height for better readability */
+}
+
+/* Additional styles for blockquotes, lists, etc., if needed */
+.markdown-content blockquote {
+  font-size: 18px;
+  font-style: italic;
+  color: #6a737d;
+  border-left: 4px solid #dfe2e5;
+  padding-left: 16px;
+  margin-left: 0;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  font-size: 20px;
+  padding-left: 20px;
+}

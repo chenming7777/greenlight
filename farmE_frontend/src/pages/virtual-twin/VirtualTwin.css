@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=swap');
+
+body {
+  margin: 0;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.hero {
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.model-3d {
+  height: calc(100vh - 120px)  !important;
+  border-radius: 12px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.variables {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 344px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.variables .toggle {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgba(245, 245, 245, 0.89);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  padding: 5px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.variables .toggle div {
+  padding: 10px 15px;
+  color: #6d9651c5;
+  width: 50%;
+  text-align: center;
+  border-radius: 6px;
+  transition: box-shadow 0.3s cubic-bezier(0.11, 0.76, 0.7, 0.97), color 0.3s cubic-bezier(0.11, 0.76, 0.7, 0.97);
+}
+
+.variables .toggle div.selected {
+  color: #6d9651;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  font-weight: 600;
+  background-color: rgb(245, 245, 245);
+}
+
+.right-modal {
+  transition: transform 0.3s ease-out;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+  background: rgb(245, 245, 245);
+  padding: 15px 22px;
+  width: 300px;
+  max-height: calc(100vh - 350px);
+  border-radius: 12px;
+  overflow-y: scroll;
+}
+
+.right-modal-show {
+  transform: translateX(0);
+}
+
+.right-modal-hide {
+  transform: translateX(400px);
+}
+
+.right-modal .panel-close-btn {
+  color: rgb(211, 50, 50);
+  padding: 0;
+  margin-top: 13px;
+  margin-bottom: 2px;
+  
+  border: none;
+  border-bottom: solid 1px rgb(211, 50, 50);
+  background: none;
+  cursor: pointer;
+}
+
+.title-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: 29px;
+  margin-bottom: 10px;
+}
+
+.info-wrapper {
+  margin-bottom: 10px;
+}
+
+.info-wrapper .subtitle {
+  color: #6d9651;
+  margin-bottom: 3px;
+}
+
+.input-wrapper {
+  background-color: rgb(245, 245, 245);
+  border-radius: 12px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 15px 22px;
+}
+
+.input-wrapper .subtitle {
+  color: #6d9651;
+}
+
+.add-remove-panel {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 5px;
+  border: 1px solid #6d9651;
+  color: #6d9651;
+  text-align: center;
+  user-select: none;
+}
+
+.add-remove-panel:hover {
+  background-color: #6d9651;
+  color: white;
+}
+
+.input-wrapper .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.input-wrapper .row .weathers {
+  display: flex;
+  gap: 13px;
+  font-size: 18px;
+}
+
+.selected-weather {
+  border-bottom: #6d9651 solid 2px;
+}
+
+.input-wrapper .row .weathers div {
+  cursor: pointer;
+}
+
+.panel-count-control {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px
+  ;
+}

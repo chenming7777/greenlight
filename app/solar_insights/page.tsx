@@ -1,4 +1,4 @@
-import Sidebar from '@/components/home_dashboard/sidebar'
+import Sidebar from '@/components/ui/sidebar'
 import { HotTopics } from '@/components/solar_insights/hot_topics'
 import { Categories } from '@/components/solar_insights/categories'
 import { TodayHighlight } from '@/components/solar_insights/today_highlight'

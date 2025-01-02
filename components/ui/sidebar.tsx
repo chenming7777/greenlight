@@ -10,12 +10,12 @@ export default function Sidebar() {
   const pathname = usePathname()
 
   const menuItems = [
-    { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard', href: '/' },
-    { id: 'virtual-tour', icon: Building2, label: 'Virtual Tour', href: '/virtual-tour' },
+    { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard', href: '/homepage_dashboard' },
+    { id: 'virtual-tour', icon: Building2, label: 'Virtual Tour', href: '/virtual_tour' },
     { id: 'financial', icon: PieChart, label: 'Financial Overview', href: '/financial' },
-    { id: 'system', icon: Zap, label: 'System Care', href: '/system' },
-    { id: 'solar', icon: Sun, label: 'Solar Insights', href: '/solar-insights' },
-    { id: 'smart', icon: Lightbulb, label: 'Smart Solution', href: '/smart' },
+    { id: 'system', icon: Zap, label: 'System Care', href: '/system_care' },
+    { id: 'solar', icon: Sun, label: 'Solar Insights', href: '/solar_insights' },
+    { id: 'smart', icon: Lightbulb, label: 'Smart Solution', href: '/smart_assistance' },
   ]
 
   return (
@@ -60,8 +60,12 @@ export default function Sidebar() {
         <ul className="space-y-2">
           <li>
             <Link
-              href="#"
-              className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100"
+              href="/notifications"
+              className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
+                pathname === '/notifications'
+                  ? 'bg-green-500 text-white'
+                  : 'text-gray-600 hover:bg-gray-100'
+              }`}
             >
               <Bell className="w-5 h-5" />
               <span>Notification</span>
@@ -69,7 +73,7 @@ export default function Sidebar() {
           </li>
           <li>
             <Link
-              href="#"
+              href="/settings"
               className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100"
             >
               <Settings className="w-5 h-5" />

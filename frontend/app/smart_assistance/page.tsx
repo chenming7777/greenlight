@@ -1,5 +1,5 @@
 import { Chat } from '@/components/smart_assistance/chat'
-import  Sidebar  from '@/components/ui/sidebar' // Updated import path
+import  Sidebar  from '@/components/ui/sidebar' 
 
 
 export default function SmartAssistantPage() {

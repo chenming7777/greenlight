@@ -16,7 +16,7 @@ export function Chat() {
         <div className="max-w-4xl mx-auto space-y-8">
           <div className="text-center space-y-2">
             <h1 className="text-3xl font-semibold text-green-600">
-              Hello, I'm your farmAI
+              Hello, I'm your Energy Analyst
             </h1>
             <p className="text-2xl text-gray-400">
               How can I help you today?

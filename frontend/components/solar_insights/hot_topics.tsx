@@ -4,8 +4,8 @@ export function HotTopics() {
   return (
     <div className="relative h-[300px] rounded-xl overflow-hidden">
       <Image
-        src="/media/solar-panels-hero.jpg"
-        alt="Solar Panels in Agricultural Field"
+        src="/solar_insight/hot_topic.jpg"
+        alt="Solar Panels in Various Applications"
         fill
         className="object-cover"
       />
@@ -13,10 +13,9 @@ export function HotTopics() {
       <div className="absolute bottom-0 left-0 p-6">
         <h1 className="text-2xl font-bold text-white mb-2">Hot Topics</h1>
         <p className="text-white text-lg max-w-2xl">
-          Breakthrough in Agrivoltaics: Solar Panels Boost Crop Yields While Powering Communities
+          Breakthrough Innovations in Solar Energy: Next-gen solar panel, AI-powered monitoring and floating solar farm are empowering resident and business alike, making clean energy more accessible and efficient than ever before.
         </p>
       </div>
     </div>
   )
 }
-

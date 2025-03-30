@@ -1,4 +1,7 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+https://ambientcg.com/view?id=Grass005
+https://ambientcg.com/view?id=SolarPanel002
+https://polyhaven.com/a/kloofendal_48d_partly_cloudy_puresky
 
 ## Getting Started
 

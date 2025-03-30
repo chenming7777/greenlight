@@ -1,4 +1,4 @@
-import { Chat } from '@/components/smart_assistance/chat'
+import Chatbot from '@/components/smart_assistance/chatbot'
 import  Sidebar  from '@/components/ui/sidebar' 
 
 
@@ -7,7 +7,7 @@ export default function SmartAssistantPage() {
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
       <main className="flex-1">
-        <Chat />
+        <Chatbot />
       </main>
     </div>
   )

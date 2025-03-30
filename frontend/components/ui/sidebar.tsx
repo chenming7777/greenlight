@@ -11,7 +11,7 @@ export default function Sidebar() {
 
   const menuItems = [
     { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard', href: '/homepage_dashboard' },
-    { id: 'virtual-tour', icon: Building2, label: 'Virtual Tour', href: '/virtual_tour' },
+    { id: 'virtual-tour', icon: Building2, label: 'Digital Twin', href: '/digital_twin' },
     { id: 'financial', icon: PieChart, label: 'Financial Overview', href: '/financial' },
     { id: 'system', icon: Zap, label: 'System Care', href: '/system_care' },
     { id: 'solar', icon: Sun, label: 'Solar Insights', href: '/solar_insights' },
@@ -22,8 +22,8 @@ export default function Sidebar() {
     <div className="w-64 bg-white border-r flex flex-col h-screen">
       <div className="p-4">
         <div className="flex items-center space-x-2">
-          <Image src="/media/placeholder.svg" alt="Farm-E Logo" width={32} height={32} className="rounded" />
-          <span className="font-semibold text-xl">FARM-E</span>
+          <Image src="/greenlight_logo.svg" alt="Farm-E Logo" width={32} height={32} className="rounded" />
+          <span className="font-semibold text-xl text-green-500">GreenLight</span>
         </div>
       </div>
       <nav className="flex-1 p-4">

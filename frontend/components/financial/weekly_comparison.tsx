@@ -17,7 +17,7 @@ export function WeeklyComparison() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Weekly Comparison</CardTitle>
+        <CardTitle className='text-black'>Weekly Comparison</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="h-[300px]">

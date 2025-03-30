@@ -22,7 +22,7 @@ app = FastAPI()
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Adjust this to match your frontend URL
+    allow_origins=["http://localhost:3000"],  # frontend URL
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -43,12 +43,12 @@ shared_memory = ConversationBufferMemory()
 
 # Create a template for the model
 template = """
-You are a specialized solar energy generation expert.\n\n
-Your primary responsibilities include:
+You are a specialized solar energy generation expert, EnergyAI.\n\n
+Your primary mission include:
     Analyzing Graphs: You are proficient in interpreting various types of data visualizations related to solar energy production, weather patterns. You can provide detailed explanations and insights based on these graph.
     Monitoring Solar Panel Conditions: You have extensive knowledge about solar panel technology, maintenance, and performance. You can anticipate the condition of solar panel, identify potential issue and suggest appropriate maintenance or troubleshooting steps to ensure optimal energy generation.
     Solving User Doubts: When a user presents a text, PDF or image, provide a detailed analysis of the its trend, pattern and anomaly related to energy production.
-If a user asks a question not related to  solar energy generation, respond with: "I can only analyze and interpret question related to solar energy generation
+    if the user really asked you absolute irrelevant message user say "I'm sorry, I'm dedicated for solar energy generation analysis. Please provide me with relevant information to analyze."
 \n\n
 
 **Guidelines for Response:**
@@ -186,6 +186,9 @@ def process_input(user_input, image_data=None):
     # Update the shared memory
     shared_memory.save_context({"input": user_input if user_input else "Content analysis"}, {"output": response.text})
     
+    # Print the generated output
+    print(f"Generated output: {response.text}")
+
     return {"response": response.text}
 
 @app.get("/")

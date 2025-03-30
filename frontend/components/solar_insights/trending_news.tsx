@@ -3,18 +3,20 @@ import { CalendarDays } from 'lucide-react'
 
 const news = [
   {
-    title: 'Leading Agrivoltaic UPM Terima Pengiktirafan Malaysia Book of Records',
-    date: '19 May 2023',
-    image: '/media/news-1.jpg',
+    title: 'Malaysia Achieves Milestone in Solar Energy Adoption with Net Energy Metering (NEM) Success',
+    date: '12 March 2025',
+    image: '/solar_insight/trending.jpg',
     description:
-      'UPM Professor Datin Dr Rosenani Anwarul menjadi penerima pengiktirafan dari The Malaysia Book of Records yang berkenaan dengan Teknologi Voltan Selangor...',
+      'Malaysia has successfully increased solar energy adoption through its Net Energy Metering (NEM) initiative, allowing households and businesses to export surplus energy back to the grid. The program has led to a significant rise in rooftop solar installations nationwide.',
+    link: 'https://www.seda.gov.my/reportal/nem/', // Add the link here
   },
   {
-    title: 'Global Agrivoltaic Market Surges: Solar Integration in Agriculture Sees Rapid Growth, Projected to Exceed $10 Billion by 2030',
-    date: '15 May 2023',
-    image: '/media/news-2.jpg',
+    title: 'SEDA Announces New Solar Incentives Under Budget 2025',
+    date: '20 January 2025',
+    image: '/solar_insight/trending2.jpg',
     description:
-      'The global agrivoltaic market is experiencing unprecedented growth as farmers and energy providers collaborate...',
+      'The Sustainable Energy Development Authority (SEDA) Malaysia has announced new incentives under Budget 2025, including tax relief programs like GITA and CA, to encourage renewable energy investments. Floating solar farms and smart-grid technologies are also being prioritized.',
+    link: 'https://www.seda.gov.my/', // Add the link here
   },
 ]
 
@@ -24,29 +26,36 @@ export function TrendingNews() {
       <h2 className="text-xl font-semibold text-gray-900 mb-4">Trending News</h2>
       <div className="space-y-4">
         {news.map((item) => (
-          <div
+          <a
             key={item.title}
-            className="flex gap-4 p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+            href={item.link} // Use the link property here
+            target="_blank" // Open in a new tab
+            rel="noopener noreferrer" // Security best practices
+            className="block"
           >
-            <div className="relative w-32 h-24 flex-shrink-0">
-              <Image
-                src={item.image}
-                alt={item.title}
-                fill
-                className="object-cover rounded-lg"
-              />
-            </div>
-            <div className="flex-1">
-              <h3 className="font-medium text-gray-900 mb-2">{item.title}</h3>
-              <div className="flex items-center text-sm text-gray-500">
-                <CalendarDays className="w-4 h-4 mr-1" />
-                {item.date}
+            <div
+              className="flex gap-4 p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+            >
+              <div className="relative w-60 h-45 flex-shrink-0">
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  fill
+                  className="object-cover rounded-lg"
+                />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-medium text-gray-900 mb-2">{item.title}</h3>
+                <div className="flex items-center text-sm text-gray-500">
+                  <CalendarDays className="w-4 h-4 mr-1" />
+                  {item.date}
+                </div>
+                <p className="mt-2 text-gray-700">{item.description}</p>
               </div>
             </div>
-          </div>
+          </a>
         ))}
       </div>
     </div>
   )
 }
-

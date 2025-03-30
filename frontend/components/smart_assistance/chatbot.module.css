@@ -1,0 +1,175 @@
+.main {
+  flex: 1;
+  min-height: 100vh;
+  padding-bottom: 15vh;
+  position: relative;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 22px;
+  padding: 20px;
+  color: #585858;
+}
+
+.mainContainer {
+  max-width: 900px;
+  margin: auto;
+  text-align: center;
+  position: relative; 
+}
+
+.greet {
+  margin: 50px 0;
+  font-size: 56px;
+  color: #c4c7c5;
+  font-weight: 500;
+  padding: 20px;
+}
+
+.greet span {
+  background: linear-gradient(16deg, #015f20, #01ba3f);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtext {
+  font-size: 1.2rem;
+  color: gray;
+}
+
+.main .cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 20px;
+  justify-content: center;
+}
+
+.card {
+  min-height: 150px;
+  padding: 15px;
+  background-color: #f0f4f9;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  color: #333; /* Darker font color */
+}
+
+.card:hover {
+  background-color: #dfe4ea;
+}
+
+.main .card p {
+  font-size: 14px; /* Adjust font size for better fit */
+  font-weight: bold;
+  color: #333; /* Darker font color */
+}
+
+.card svg {
+  color: #333 !important; /* Makes icons darker */
+}
+
+
+
+.chatContainer {
+  display: none;
+  min-height: 50vh;
+  margin-top: 20px;
+}
+
+.chatContainer.show {
+  display: block;
+}
+
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* User message bubble */
+.userMessage {
+  background-color: #d3f9d8; /* Light green */
+  padding:10px;
+  border-radius: 15px;
+  margin: 5px 0;
+  align-self: flex-start; /* Align to the left */
+  display: inline-block; /* Adjust width based on content */
+  max-width: 80%; /* Prevents overly wide messages */
+  word-break: break-word; /* Ensures long text wraps properly */
+  margin-left: 550px; /* Adds spacing from the left edge */
+  text-align: right; /* Align text to the right */
+}
+
+/* Bot message bubble */
+.botMessage {
+  background-color: #f0f4f9; /* Light gray */
+  padding: 10px;
+  border-radius: 15px;
+  margin: 5px 0;
+  align-self: flex-end; /* Align to the right */
+  max-width: 80%; /* Prevents overly wide messages */
+  word-break: break-word; /* Ensures long text wraps properly */
+  margin-right: 20px; /* Adds spacing from the right edge */
+  text-align: left; /* Align text to the left */
+}
+
+/* Markdown content inside bot messages */
+.markdownContent {
+  color: black; /* Ensure black font color */
+}
+
+.searchBoxContainer {
+  position: fixed;             /* Fixed position to keep it in place */
+  bottom: 20px;                /* Adjust the bottom position as needed */
+  left: 57%;                   /* Center horizontally within the viewport */
+  transform: translateX(-50%); /* Center alignment fix */
+  width: 90%;                  /* Responsive width; adjust as needed */
+  max-width: 700px;            /* Prevents it from getting too wide */
+  z-index: 999;                /* Keep it above other elements */
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background-color: #f0f4f9;   /* Light gray/white background */
+  padding: 10px 20px;
+  border-radius: 50px;         /* Gives that pill-shaped look */
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Slight shadow above it */
+}
+
+.searchBox input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 8px;
+  font-size: 16px;
+  color: #333;                 /* Text color inside the input */
+}
+
+.inputActions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.inputActions svg {
+  color: #333; /* Darker icon color for visibility */
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}

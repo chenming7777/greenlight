@@ -44,7 +44,7 @@ export function ExpensesBreakdown() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Expenses Breakdown</CardTitle>
+        <CardTitle className="text-black">Expenses Breakdown</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">

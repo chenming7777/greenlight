@@ -5,26 +5,26 @@ const categories = [
   {
     title: 'SOLAR TECHNOLOGY',
     icon: Sun,
-    description: 'Latest innovations in solar panel technology',
-    href: '#',
+    description: 'Latest innovations in solar panel technology, what panel you should implement',
+    href: 'https://www.tnb.com.my/solar',
   },
   {
-    title: 'SYSTEM DESIGN AND INSTALLATION',
+    title: 'NET ENERGY METERING (NEM) POLICY',
     icon: Wrench,
-    description: 'Best practices for solar system implementation',
-    href: '#',
+    description: 'Understand Malaysia Net Energy Metering scheme, allowing surplus energy to be exported back to the grid.',
+    href: 'https://www.mytnb.com.my/renewable-energy/net-energy-metering',
   },
   {
-    title: 'ENVIRONMENTAL IMPACT',
+    title: 'RENEWABLE ENERGY TARIFFS',
     icon: Leaf,
-    description: 'Environmental benefits and sustainability metrics',
-    href: '#',
+    description: 'Explore Sustainable Energy Development Authority (SEDA) Feed-in Tariff (FiT) incentives for renewable energy adoption.',
+    href: 'https://www.seda.gov.my/reportal/fit/',
   },
   {
     title: 'ECONOMIC AND FINANCIAL INSIGHTS',
     icon: PieChart,
     description: 'Cost analysis and financial planning',
-    href: '#',
+    href: 'https://ember-energy.org/latest-insights/solar-and-grid-flexibility-critical-for-malaysia/',
   },
 ]
 
@@ -39,6 +39,8 @@ export function Categories() {
             <Link
               key={category.title}
               href={category.href}
+              target="_blank" // Open in a new tab
+              rel="noopener noreferrer" // Security best practices
               className="block p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow"
             >
               <div className="flex items-start space-x-4">

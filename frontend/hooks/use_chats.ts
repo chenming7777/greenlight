@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { Message } from '@/types/chat'
 
-// This is a mock implementation that can be replaced with actual FastAPI calls
 export function useChat() {
   const [messages, setMessages] = useState<Message[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -39,13 +38,8 @@ export function useChat() {
     } finally {
       setIsLoading(false)
     }
-  }
+  };
 
-  return {
-    messages,
-    isLoading,
-    error,
-    sendMessage,
-  }
+  return { messages, isLoading, error, sendMessage };
 }
 

@@ -5,10 +5,15 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, useTexture, Environment } from '@react-three/drei';
 import * as THREE from 'three';
 
+import Papa from 'papaparse';
+
+
 interface PanelProps {
   position: [number, number, number];
   rotation: [number, number, number];
   color: string;
+  isBroken: boolean;
+  onClick: () => void; // Add this line
 }
 
 // Data Item component with explicit type annotations
@@ -25,44 +30,123 @@ interface SensorData {
   windSpeed: number;
 }
 
-// Define DataSimulator props
-interface DataSimulatorProps {
-  setSensorData: React.Dispatch<React.SetStateAction<SensorData>>;
-  isActive: boolean;
+interface SolarDataEntry {
+  Energy_delta_Wh: number;
+  GHI: number;
+  temp: number;
+  pressure: number;
+  humidity: number;
+  wind_speed: number;
+  rain_1h: number;
+  clouds_all: number;
+  Year: number;
+  Month_num: number;
+  Hour: number;
+  Minute: number;
 }
+
+export const parseCSV = (csvData: string): SolarDataEntry[] => {
+  const parsed = Papa.parse(csvData, {
+    header: true,
+    dynamicTyping: true,
+    skipEmptyLines: true
+  });
+
+  // Add type assertion here
+  return parsed.data as SolarDataEntry[];
+};
+
+
+
+// Solar Data Simulator
+const SolarDataSimulator = ({
+  setSolarData,
+  isActive,
+  isBroken,
+  historicalData,
+  currentIndex,
+  setCurrentIndex,
+  selectedPanel // Add this prop
+}: {
+  setSolarData: React.Dispatch<React.SetStateAction<any>>;
+  isActive: boolean;
+  isBroken: boolean;
+  historicalData: SolarDataEntry[];
+  currentIndex: number;
+  setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
+  selectedPanel: { // Add this type
+    position: [number, number, number];
+    isBroken: boolean;
+  } | null;
+}) => {
+  useEffect(() => {
+    if (!isActive || !historicalData.length || !selectedPanel) return;
+
+    const interval = setInterval(() => {
+      const newIndex = (currentIndex + 1) % historicalData.length;
+      setCurrentIndex(newIndex);
+      setSolarData({
+        generatedEnergy: isBroken ? 0 : historicalData[newIndex].Energy_delta_Wh,
+        position: selectedPanel.position // Now properly referenced
+      });
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [
+    isActive,
+    historicalData,
+    currentIndex,
+    isBroken,
+    selectedPanel // Add to dependencies
+  ]);
+
+  return null;
+};
+
 
 
 // Data Item component
 const DataItem = ({ label, value }: DataItemProps) => (
   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-    <span style={{ color: '#666' }}>{label}</span>
-    <span style={{ fontWeight: 600 }}>
+    <span style={{ color: 'black' }}>{label}</span>
+    <span style={{ fontWeight: 600, color: 'black' }}>
       {typeof value === 'number' ? value.toFixed(1) : value}
     </span>
   </div>
 );
 
-// Data Simulator Component
+// Sensor Data Simulator
 const DataSimulator = ({
   setSensorData,
-  isActive
+  isActive,
+  historicalData, // Add this prop
+  currentIndex, // Add this prop
+  setCurrentIndex // Add this prop
 }: {
   setSensorData: React.Dispatch<React.SetStateAction<SensorData>>;
   isActive: boolean;
+  historicalData: SolarDataEntry[]; // Add type
+  currentIndex: number;
+  setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
 }) => {
-  useFrame(() => {
-    if (!isActive) return;
-    
-    setSensorData({
-      temperature: Math.random() * 10 + 20,
-      humidity: Math.random() * 20 + 50,
-      irradiance: Math.random() * 300 + 800,
-      windSpeed: Math.random() * 10 + 10
-    });
-  });
+  useEffect(() => {
+    if (!isActive || !historicalData.length) return;
+    const interval = setInterval(() => {
+      const newIndex = (currentIndex + 1) % historicalData.length;
+      setCurrentIndex(newIndex);
+      setSensorData({
+        temperature: historicalData[newIndex].temp,
+        humidity: historicalData[newIndex].humidity,
+        irradiance: historicalData[newIndex].GHI,
+        windSpeed: historicalData[newIndex].wind_speed
+      });
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [isActive, historicalData, currentIndex]);
 
   return null;
 };
+
 
 // HDRI Environment component
 export const HDRIEnvironment = () => {
@@ -76,7 +160,13 @@ export const HDRIEnvironment = () => {
 
 
 // Solar Panel component
-const SolarPanel: React.FC<PanelProps> = ({ position, rotation, color }) => {
+const SolarPanel: React.FC<PanelProps & { onClick: () => void }> = ({
+  position,
+  rotation,
+  color,
+  isBroken,
+  onClick
+}) => {
   const [
     colorMap,
     displacementMap,
@@ -95,7 +185,13 @@ const SolarPanel: React.FC<PanelProps> = ({ position, rotation, color }) => {
   colorMap.generateMipmaps = false;
 
   return (
-    <mesh position={position} rotation={rotation}>
+    <mesh
+      position={position}
+      rotation={rotation}
+      onClick={onClick}
+      onPointerOver={() => document.body.style.cursor = 'pointer'}
+      onPointerOut={() => document.body.style.cursor = 'auto'}
+    >
       <planeGeometry args={[4, 4]} />
       <meshPhysicalMaterial
         map={colorMap}
@@ -114,6 +210,8 @@ const SolarPanel: React.FC<PanelProps> = ({ position, rotation, color }) => {
         ior={1.5}
         envMapIntensity={2}
         color={color} // Apply shading color
+        transparent={isBroken} // Enable transparency for broken panels
+        opacity={isBroken ? 0.8 : 1}
       />
     </mesh>
   );
@@ -181,9 +279,9 @@ const SunAnimation = ({
 
 
 // Sensor Stand component
-const SensorStand = ({ 
+const SensorStand = ({
   onClick // No event parameter needed
-}: { 
+}: {
   onClick: () => void // Simplified type
 }) => {
   const poleRef = useRef<THREE.Mesh>(null);
@@ -191,7 +289,7 @@ const SensorStand = ({
 
 
   return (
-    <group position={[10, 0, -5]}>
+    <group position={[15, 0, -10]}>
       {/* Base plate */}
       <mesh position={[0, 0.5, 0]} receiveShadow>
         <boxGeometry args={[2, 1, 2]} />
@@ -199,9 +297,9 @@ const SensorStand = ({
       </mesh>
 
       {/* Interactive pole with event handler */}
-      <mesh 
+      <mesh
         ref={poleRef}
-        position={[0, 3, 0]} 
+        position={[0, 3, 0]}
         castShadow
         onClick={onClick} // Directly use the handler
         onPointerOver={() => document.body.style.cursor = 'pointer'}
@@ -214,7 +312,7 @@ const SensorStand = ({
       {/* Sensor components */}
       <mesh position={[0, 6.5, 0]} castShadow>
         <boxGeometry args={[1.5, 1, 1]} />
-        <meshPhysicalMaterial 
+        <meshPhysicalMaterial
           color="#2a2a2a"
           metalness={0.7}
           roughness={0.1}
@@ -248,6 +346,24 @@ const DigitalTwinsModel: React.FC = () => {
     spacing: 2.5 // Increased spacing
   };
 
+
+  // NEW STATE DECLARATIONS - Add here
+  const [selectedPanel, setSelectedPanel] = useState<{
+    position: [number, number, number];
+    isBroken: boolean;
+  } | null>(null);
+
+  const [solarData, setSolarData] = useState<{
+    generatedEnergy: number;
+    position: [number, number, number];
+  } | null>(null);
+
+
+  const handlePanelClick = (position: [number, number, number], isBroken: boolean) => {
+    setSelectedPanel({ position, isBroken });
+  };
+
+
   // For light and sun
   const lightRef = useRef<THREE.DirectionalLight>(null);
   const sunRef = useRef<THREE.Mesh>(null);
@@ -256,28 +372,27 @@ const DigitalTwinsModel: React.FC = () => {
   // Generate panels with varying shading colors
   const generatePanels = (): React.ReactElement[] => {
     const panels: React.ReactElement[] = [];
-    const colorGradient: string[] = [
-      '#FF0000',  // Red (high shading loss)
-      '#FFA500',  // Orange (medium shading loss)
-      '#FFFF00',  // Yellow (low shading loss)
-      '#00FF00'   // Green (minimal shading loss)
-    ];
+    const brokenPositions = new Set(['0-0', '1-2', '3-4']); // Add your desired positions
 
     for (let row = 0; row < panelConfig.rows; row++) {
       for (let col = 0; col < panelConfig.columns; col++) {
-        const shadeIndex = Math.floor(Math.random() * colorGradient.length);
-        const color = colorGradient[shadeIndex];
+        // Add this line to define broken status
+        const isBroken = brokenPositions.has(`${row}-${col}`);
+        const color = isBroken ? '#FF0000' : 'white';
+        const panelPosition: [number, number, number] = [
+          col * (panelConfig.panelWidth + panelConfig.spacing),
+          0,
+          row * (panelConfig.panelHeight + panelConfig.spacing)
+        ];
 
         panels.push(
           <SolarPanel
             key={`panel-${row}-${col}`}
-            position={[
-              col * (panelConfig.panelWidth + panelConfig.spacing),
-              0,
-              row * (panelConfig.panelHeight + panelConfig.spacing)
-            ]}
+            position={panelPosition}
             rotation={[-Math.PI / 2, 0, 0]}
             color={color}
+            isBroken={isBroken} // Now this is defined
+            onClick={() => handlePanelClick(panelPosition, isBroken)}
           />
         );
       }
@@ -294,18 +409,20 @@ const DigitalTwinsModel: React.FC = () => {
   });
 
   const [showPanel, setShowPanel] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [historicalData, setHistoricalData] = useState<SolarDataEntry[]>([]);
 
-  // Simulate data updates
-  useFrame(() => {
-    if (!showPanel) return;
+  useEffect(() => {
+    fetch('./solar_preprocessing/solar_weather_processed.csv')
+      .then(response => response.text())
+      .then(data => {
+        const parsedData = parseCSV(data);
+        setHistoricalData(parsedData);
+      });
+  }, []);
 
-    setSensorData({
-      temperature: Math.random() * 10 + 20,
-      humidity: Math.random() * 20 + 50,
-      irradiance: Math.random() * 300 + 800,
-      windSpeed: Math.random() * 10 + 10
-    });
-  });
+
+
 
   return (
     <div style={{ width: '100%', height: '700px', position: 'relative' }}>
@@ -361,12 +478,26 @@ const DigitalTwinsModel: React.FC = () => {
             dampingFactor={0.05}
           />
 
-          {/* Environment sensor */}
-          <DataSimulator 
-            setSensorData={setSensorData} 
-            isActive={showPanel} 
+          <DataSimulator
+            setSensorData={setSensorData}
+            isActive={showPanel}
+            historicalData={historicalData}
+            currentIndex={currentIndex}
+            setCurrentIndex={setCurrentIndex}
           />
-          
+
+          <SolarDataSimulator
+            setSolarData={setSolarData}
+            isActive={!!solarData}
+            isBroken={selectedPanel?.isBroken || false}
+            historicalData={historicalData}
+            currentIndex={currentIndex}
+            setCurrentIndex={setCurrentIndex}
+            selectedPanel={selectedPanel} // Pass the state here
+          />
+
+          {/* Environment sensor */}
+
           <SensorStand onClick={() => setShowPanel(!showPanel)} />
         </Canvas>
       </Suspense>
@@ -387,37 +518,89 @@ const DigitalTwinsModel: React.FC = () => {
             zIndex: 10
           }}
         >
-          <h3 style={{ margin: '0 0 15px' }}>Sensor Data</h3>
+          {/* Add exit button */}
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              marginBottom: '15px'
+            }}
+          >
+            <h3 style={{ margin: '0 0 15px', color: 'black' }}>Sensor Data</h3>
+            <button
+              onClick={() => setShowPanel(false)}
+              style={{
+                background: 'none',
+                border: 'none',
+                fontSize: '1.2em',
+                cursor: 'pointer',
+                color: 'red'
+              }}
+            >
+              X
+            </button>
+          </div>
+
           <div style={{ display: 'grid', gap: '8px' }}>
             <DataItem label="Temperature" value={`${sensorData.temperature.toFixed(1)}°C`} />
             <DataItem label="Humidity" value={`${sensorData.humidity.toFixed(0)}%`} />
             <DataItem label="Irradiance" value={`${sensorData.irradiance.toFixed(0)} W/m²`} />
             <DataItem label="Wind Speed" value={`${sensorData.windSpeed.toFixed(1)} m/s`} />
           </div>
-
-
-          {/* Control Panel */}
-          <div style={{
-            position: 'absolute',
-            top: 10,
-            right: 10,
-            background: 'rgba(255,255,255,0.8)',
-            padding: '10px',
-            borderRadius: '5px'
-          }}>
-            <div>Display Settings</div>
-            <label>
-              <input type="checkbox" defaultChecked /> Sun Path
-            </label>
-            <br />
-            <label>
-              <input type="checkbox" defaultChecked /> Terrain
-            </label>
-          </div>
         </div>
       )}
+
+      {/* New solar panel data panel */}
+      {selectedPanel && (
+        <div
+          style={{
+            position: 'absolute',
+            top: '20%',
+            left: '2%',
+            width: '250px',
+            background: 'white',
+            borderRadius: '8px',
+            padding: '15px',
+            boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+            transition: 'all 0.3s',
+            zIndex: 10
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <h3 style={{ color: 'black' }}>Solar Panel Output</h3>
+            <button style={{
+              background: 'none',
+              border: 'none',
+              fontSize: '1.2em',
+              cursor: 'pointer',
+              color: 'red'
+            }}
+              onClick={() => {
+                setSelectedPanel(null);
+              }}>
+              X
+            </button>
+          </div>
+          <DataItem
+            label="Status"
+            value={selectedPanel.isBroken ? 'FAULTY' : 'OPERATIONAL'}
+          />
+          <DataItem
+            label="Generated Energy"
+            value={
+              selectedPanel.isBroken
+                ? '0 W'
+                : historicalData.length
+                  ? `${historicalData[currentIndex].Energy_delta_Wh.toFixed(0)} W`
+                  : 'Loading...'
+            }
+          />
+        </div>
+      )}
+
+
     </div>
   );
 };
 
-      export default DigitalTwinsModel;
+export default DigitalTwinsModel;

@@ -28,10 +28,14 @@ interface SensorData {
   humidity: number;
   irradiance: number;
   windSpeed: number;
+  pressure: number;
+  rain: number;
+  cloud: number;
 }
 
 interface SolarDataEntry {
-  Energy_delta_Wh: number;
+  energy: number;
+  Time: string;
   GHI: number;
   temp: number;
   pressure: number;
@@ -39,20 +43,18 @@ interface SolarDataEntry {
   wind_speed: number;
   rain_1h: number;
   clouds_all: number;
-  Year: number;
-  Month_num: number;
-  Hour: number;
-  Minute: number;
 }
 
 export const parseCSV = (csvData: string): SolarDataEntry[] => {
   const parsed = Papa.parse(csvData, {
     header: true,
     dynamicTyping: true,
-    skipEmptyLines: true
+    skipEmptyLines: true,
+    transformHeader: (header) => {
+      if (header === 'Energy delta[Wh]') return 'energy'; // Create alias
+      return header.replace(/ /g, '_');
+    }
   });
-
-  // Add type assertion here
   return parsed.data as SolarDataEntry[];
 };
 
@@ -86,7 +88,7 @@ const SolarDataSimulator = ({
       const newIndex = (currentIndex + 1) % historicalData.length;
       setCurrentIndex(newIndex);
       setSolarData({
-        generatedEnergy: isBroken ? 0 : historicalData[newIndex].Energy_delta_Wh,
+        generatedEnergy: isBroken ? 0 : historicalData[newIndex].energy,
         position: selectedPanel.position // Now properly referenced
       });
     }, 2000);
@@ -97,7 +99,7 @@ const SolarDataSimulator = ({
     historicalData,
     currentIndex,
     isBroken,
-    selectedPanel // Add to dependencies
+    selectedPanel
   ]);
 
   return null;
@@ -119,34 +121,45 @@ const DataItem = ({ label, value }: DataItemProps) => (
 const DataSimulator = ({
   setSensorData,
   isActive,
-  historicalData, // Add this prop
-  currentIndex, // Add this prop
-  setCurrentIndex // Add this prop
+  historicalData,
+  currentIndex,
+  setCurrentIndex,
+  setCurrentTime
 }: {
   setSensorData: React.Dispatch<React.SetStateAction<SensorData>>;
   isActive: boolean;
-  historicalData: SolarDataEntry[]; // Add type
+  historicalData: SolarDataEntry[];
   currentIndex: number;
   setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
+  setCurrentTime: React.Dispatch<React.SetStateAction<Date | null>>;
 }) => {
   useEffect(() => {
     if (!isActive || !historicalData.length) return;
+
     const interval = setInterval(() => {
       const newIndex = (currentIndex + 1) % historicalData.length;
       setCurrentIndex(newIndex);
-      setSensorData({
-        temperature: historicalData[newIndex].temp,
-        humidity: historicalData[newIndex].humidity,
-        irradiance: historicalData[newIndex].GHI,
-        windSpeed: historicalData[newIndex].wind_speed
-      });
-    }, 2000);
-    return () => clearInterval(interval);
-  }, [isActive, historicalData, currentIndex]);
+      const entry = historicalData[newIndex];
 
+      setSensorData({
+        temperature: entry.temp,
+        humidity: entry.humidity,
+        irradiance: entry.GHI,
+        windSpeed: entry.wind_speed,
+        pressure: entry.pressure,
+        rain: entry.rain_1h,
+        cloud: entry.clouds_all
+      });
+
+      // Set current time from dataset
+      setCurrentTime(entry.Time ? new Date(entry.Time) : null);
+
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [isActive, historicalData, currentIndex, setCurrentTime]);
   return null;
 };
-
 
 // HDRI Environment component
 export const HDRIEnvironment = () => {
@@ -247,35 +260,6 @@ const GrassTerrain = () => {
 };
 
 
-// Sun animation component
-const SunAnimation = ({
-  lightRef,
-  sunRef
-}: {
-  lightRef: React.RefObject<THREE.DirectionalLight | null>;
-  sunRef: React.RefObject<THREE.Mesh | null>;
-}) => {
-  useFrame((state) => {
-    if (!lightRef.current || !sunRef.current) return;
-
-    const time = state.clock.getElapsedTime() * 0.5; // Animation speed
-    const radius = 25; // Horizontal movement range
-    const maxHeight = 20; // Maximum height of the sun
-
-    // Create smooth 0-1 oscillation
-    const t = (Math.sin(time) + 1) / 2;
-
-    // Parabolic trajectory calculations
-    const x = radius * (2 * t - 1); // Horizontal position (-radius to radius)
-    const y = maxHeight * (1 - Math.pow((x / radius), 2)); // Parabolic height
-
-    // Update positions with slight depth offset
-    lightRef.current.position.set(x, y, 5);
-    sunRef.current.position.set(x, y, 5);
-  });
-
-  return null;
-};
 
 
 // Sensor Stand component
@@ -346,6 +330,9 @@ const DigitalTwinsModel: React.FC = () => {
     spacing: 2.5 // Increased spacing
   };
 
+  const [currentTime, setCurrentTime] = useState<Date | null>(null);
+
+
 
   // NEW STATE DECLARATIONS - Add here
   const [selectedPanel, setSelectedPanel] = useState<{
@@ -366,7 +353,7 @@ const DigitalTwinsModel: React.FC = () => {
 
   // For light and sun
   const lightRef = useRef<THREE.DirectionalLight>(null);
-  const sunRef = useRef<THREE.Mesh>(null);
+
 
 
   // Generate panels with varying shading colors
@@ -402,10 +389,13 @@ const DigitalTwinsModel: React.FC = () => {
 
 
   const [sensorData, setSensorData] = useState({
-    temperature: 25,
-    humidity: 60,
-    irradiance: 1000,
-    windSpeed: 15
+    temperature: 0,
+    humidity: 0,
+    irradiance: 0,
+    windSpeed: 0,
+    pressure: 0,
+    rain: 0,
+    cloud: 0
   });
 
   const [showPanel, setShowPanel] = useState(false);
@@ -413,7 +403,7 @@ const DigitalTwinsModel: React.FC = () => {
   const [historicalData, setHistoricalData] = useState<SolarDataEntry[]>([]);
 
   useEffect(() => {
-    fetch('./solar_preprocessing/solar_weather_processed.csv')
+    fetch('/data/solar_weather_demo_0607.csv')
       .then(response => response.text())
       .then(data => {
         const parsedData = parseCSV(data);
@@ -451,14 +441,9 @@ const DigitalTwinsModel: React.FC = () => {
             ref={lightRef}
           />
 
-          {/* Sun representation with ref */}
-          <mesh position={[15, 10, 10]} ref={sunRef}>
-            <sphereGeometry args={[0.5, 32, 32]} />
-            <meshBasicMaterial color="yellow" />
-          </mesh>
 
-          {/* Sun animation component */}
-          <SunAnimation lightRef={lightRef} sunRef={sunRef} />
+
+
 
 
           {/* Realistic Grass Terrain */}
@@ -480,15 +465,16 @@ const DigitalTwinsModel: React.FC = () => {
 
           <DataSimulator
             setSensorData={setSensorData}
-            isActive={showPanel}
+            isActive={true}
             historicalData={historicalData}
             currentIndex={currentIndex}
             setCurrentIndex={setCurrentIndex}
+            setCurrentTime={setCurrentTime} // Add this prop
           />
 
           <SolarDataSimulator
             setSolarData={setSolarData}
-            isActive={!!solarData}
+            isActive={historicalData.length > 0} // CHANGED: Use data presence instead of solarData
             isBroken={selectedPanel?.isBroken || false}
             historicalData={historicalData}
             currentIndex={currentIndex}
@@ -543,9 +529,12 @@ const DigitalTwinsModel: React.FC = () => {
 
           <div style={{ display: 'grid', gap: '8px' }}>
             <DataItem label="Temperature" value={`${sensorData.temperature.toFixed(1)}°C`} />
-            <DataItem label="Humidity" value={`${sensorData.humidity.toFixed(0)}%`} />
-            <DataItem label="Irradiance" value={`${sensorData.irradiance.toFixed(0)} W/m²`} />
+            <DataItem label="Humidity" value={`${sensorData.humidity.toFixed(1)}%`} />
+            <DataItem label="Irradiance" value={`${sensorData.irradiance.toFixed(1)} W/m²`} />
             <DataItem label="Wind Speed" value={`${sensorData.windSpeed.toFixed(1)} m/s`} />
+            <DataItem label="pressure" value={`${sensorData.pressure.toFixed(1)} hPa`} />
+            <DataItem label="Rain" value={`${sensorData.rain.toFixed(1)} mm`} />
+            <DataItem label="Cloud Condition" value={`${sensorData.cloud.toFixed(0)} %`} />
           </div>
         </div>
       )}
@@ -589,12 +578,49 @@ const DigitalTwinsModel: React.FC = () => {
             label="Generated Energy"
             value={
               selectedPanel.isBroken
-                ? '0 W'
-                : historicalData.length
-                  ? `${historicalData[currentIndex].Energy_delta_Wh.toFixed(0)} W`
+                ? '0 Wh'
+                : solarData?.generatedEnergy !== undefined
+                  ? `${solarData.generatedEnergy.toFixed(0)} Wh`
                   : 'Loading...'
             }
           />
+        </div>
+      )}
+
+      {/* Time Panel - Always visible when data is loaded */}
+      {currentTime ? (
+        <div
+          style={{
+            position: 'absolute',
+            top: '20px',
+            right: '20px',
+            background: 'rgba(255,255,255,0.9)',
+            padding: '10px',
+            borderRadius: '8px',
+            boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+            textAlign: 'center',
+            color: 'black' // Set base color for all text
+          }}
+        >
+          <div style={{ fontSize: '14px', color: 'black' }}>Simulation Time</div>
+          <div style={{ fontSize: '18px', fontWeight: 'bold', color: 'black' }}>
+            {currentTime.toLocaleTimeString()}
+          </div>
+          <div style={{ fontSize: '12px', color: 'black' }}>
+            {currentTime.toLocaleDateString()}
+          </div>
+        </div>
+      ) : (
+        <div
+          style={{
+            position: 'absolute',
+            top: '20px',
+            right: '20px',
+            padding: '10px',
+            color: 'black'
+          }}
+        >
+          Loading time data...
         </div>
       )}
 

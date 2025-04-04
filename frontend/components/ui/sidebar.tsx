@@ -35,11 +35,10 @@ export default function Sidebar() {
               <li key={item.id}>
                 <Link
                   href={item.href}
-                  className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
-                    isActive
+                  className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${isActive
                       ? 'bg-green-500 text-white'
                       : 'text-gray-600 hover:bg-gray-100'
-                  }`}
+                    }`}
                 >
                   <Icon className="w-5 h-5" />
                   <span>{item.label}</span>
@@ -50,43 +49,28 @@ export default function Sidebar() {
         </ul>
       </nav>
       <div className="p-4 border-t">
+        ...
         <div className="bg-green-100 rounded-lg p-4 mb-4">
-          <h3 className="font-medium mb-1">Need help?</h3>
+          <h3 className="font-medium mb-1 text-black">Need help?</h3>
           <p className="text-sm text-gray-600 mb-2">Please check our docs</p>
-          <button className="w-full bg-white text-green-600 px-4 py-2 rounded text-sm font-medium">
-            DOCUMENTATION
-          </button>
+          <Link href="https://github.com/chenming7777/greenlight" target="_blank" rel="noopener noreferrer">
+            <button className="w-full bg-white text-green-600 px-4 py-2 rounded text-sm font-medium">
+              DOCUMENTATION
+            </button>
+          </Link>
         </div>
+        ...
         <ul className="space-y-2">
           <li>
             <Link
               href="/notifications"
-              className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
-                pathname === '/notifications'
+              className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${pathname === '/notifications'
                   ? 'bg-green-500 text-white'
                   : 'text-gray-600 hover:bg-gray-100'
-              }`}
+                }`}
             >
               <Bell className="w-5 h-5" />
               <span>Notification</span>
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/settings"
-              className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100"
-            >
-              <Settings className="w-5 h-5" />
-              <span>Settings</span>
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="#"
-              className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100"
-            >
-              <LogOut className="w-5 h-5" />
-              <span>Log Out</span>
             </Link>
           </li>
         </ul>

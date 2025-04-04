@@ -1,0 +1,47 @@
+.container {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 1rem 0;
+  }
+  
+  .title {
+    margin: 0 0 1rem 0;
+    font-size: 1.2rem;
+  }
+  
+  .features {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+  }
+  
+  .feature {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .featureName {
+    width: 90px;
+  }
+  
+  .bar {
+    flex: 1;
+    height: 30px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding-left: 0.5rem;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .positive {
+    background: #4CAF50;
+  }
+  
+  .negative {
+    background: #E57373;
+  }

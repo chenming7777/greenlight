@@ -1,0 +1,42 @@
+/* components/home_dashboard/weather_conditions/weather_conditions.module.css */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 400px; /* Limit width for compactness */
+}
+
+.title {
+  font-size: 1rem;
+  color: #2d3748;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.condition {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  background: #f7fafc;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+.text {
+  font-size: 0.9rem;
+  color: #4a5568;
+  white-space: nowrap; /* Prevent text wrapping */
+}

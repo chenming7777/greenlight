@@ -174,7 +174,7 @@ export default function Chatbot() {
         <div className={`${styles.initialChat} ${showChat ? styles.hidden : ""}`}>
           <div className={styles.greet}>
             <div>
-              <span>Hello, I'm energyAI</span>
+              <span>Hello, I'm EnergyAI</span>
             </div>
             <div className={styles.subtext}>How can I help you today?</div>
           </div>

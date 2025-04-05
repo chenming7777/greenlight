@@ -12,28 +12,8 @@ export interface Notification {
 const initialNotifications: Notification[] = [
   {
     id: '1',
-    message: 'Lorem ipsum Dolor Sit Amet. Lorem ipsum Dolor Sit Amet. Lorem ipsum Dolor Sit Amet. Lorem ipsum Dolor Sit Amet.',
-    date: 'March 1, 2023'
-  },
-  {
-    id: '2',
-    message: 'Lorem ipsum Dolor Sit Amet. Lorem ipsum Dolor Sit Amet. Lorem ipsum Dolor Sit Amet. Lorem ipsum Dolor Sit Amet.',
-    date: 'February 28, 2023'
-  },
-  {
-    id: '3',
-    message: 'Lorem ipsum Dolor Sit Amet. Lorem ipsum Dolor Sit Amet. Lorem ipsum Dolor Sit Amet. Lorem ipsum Dolor Sit Amet.',
-    date: 'April 29, 2022'
-  },
-  {
-    id: '4',
-    message: 'Lorem ipsum Dolor Sit Amet. Lorem ipsum Dolor Sit Amet. Lorem ipsum Dolor Sit Amet. Lorem ipsum Dolor Sit Amet.',
-    date: 'March 6, 2022'
-  },
-  {
-    id: '5',
-    message: 'Lorem ipsum Dolor Sit Amet. Lorem ipsum Dolor Sit Amet. Lorem ipsum Dolor Sit Amet. Lorem ipsum Dolor Sit Amet.',
-    date: 'March 1, 2022'
+    message: 'Solar Panel Malfunction detected. Immediate action required.',
+    date: 'April 10, 2025'
   }
 ]
 

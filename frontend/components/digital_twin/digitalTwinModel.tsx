@@ -602,13 +602,13 @@ const DigitalTwinsModel: React.FC = () => {
             color: 'black' // Set base color for all text
           }}
         >
-          <div style={{ fontSize: '14px', color: 'black' }}>Simulation Time</div>
+          <div style={{ fontSize: '14px', color: 'black' }}> Time</div>
           <div style={{ fontSize: '18px', fontWeight: 'bold', color: 'black' }}>
             {currentTime.toLocaleTimeString()}
           </div>
-          <div style={{ fontSize: '12px', color: 'black' }}>
+          {/* <div style={{ fontSize: '12px', color: 'black' }}>
             {currentTime.toLocaleDateString()}
-          </div>
+          </div> */}
         </div>
       ) : (
         <div

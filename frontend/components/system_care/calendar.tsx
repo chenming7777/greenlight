@@ -8,13 +8,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
 export function Calendar() {
-  const [currentMonth, setCurrentMonth] = useState('March')
+  const [currentMonth, setCurrentMonth] = useState('April')
   const [currentYear, setCurrentYear] = useState('2025')
   const [events, setEvents] = useState([
-    { id: 1, name: 'Solar Panel Maintenance', time: '08:00', date: '2025-03-01', category: 'Maintenance', color: 'bg-red-100 text-red-700' },
-    { id: 2, name: 'System Software Update', time: '10:00', date: '2025-03-02', category: 'System Update', color: 'bg-blue-100 text-blue-700' },
-    { id: 3, name: 'Energy Efficiency Inspection', time: '14:00', date: '2025-03-03', category: 'Inspection', color: 'bg-green-100 text-green-700' },
-    { id: 4, name: 'Client Meeting: Project Alpha', time: '16:00', date: '2025-03-04', category: 'Client Meeting', color: 'bg-yellow-100 text-yellow-700' },
+    { id: 1, name: 'Solar Panel Maintenance', time: '08:00', date: '2025-04-01', category: 'Maintenance', color: 'bg-red-100 text-red-700' },
+    { id: 2, name: 'System Software Update', time: '10:00', date: '2025-04-02', category: 'System Update', color: 'bg-blue-100 text-blue-700' },
+    { id: 3, name: 'Energy Efficiency Inspection', time: '14:00', date: '2025-04-03', category: 'Inspection', color: 'bg-green-100 text-green-700' },
+    { id: 4, name: 'Client Meeting: Project Alpha', time: '16:00', date: '2025-04-04', category: 'Client Meeting', color: 'bg-yellow-100 text-yellow-700' },
   ])
   const [showModal, setShowModal] = useState(false)
   const [newEvent, setNewEvent] = useState({ name: '', time: '', date: '', category: '', color: '' })
@@ -40,7 +40,7 @@ export function Calendar() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-4">
-          <h2 className="text-xl font-semibold">{currentMonth} {currentYear}</h2>
+          <h2 className="text-xl font-semibold text-black">{currentMonth} {currentYear}</h2>
         </div>
         <Button className="bg-blue-600 hover:bg-blue-700" onClick={() => setShowModal(true)}>
           <Plus className="w-4 h-4 mr-2" />
@@ -63,10 +63,10 @@ export function Calendar() {
             key={i}
             className="aspect-square border rounded-lg p-2 text-sm hover:bg-gray-50 cursor-pointer"
           >
-            <div className="font-medium text-gray-900">{(i % 31) + 1}</div>
+            <div className="font-medium text-gray-900">{(i % 30) + 1}</div>
             {/* Events */}
             {events
-              .filter((event) => event.date === `2025-03-${String((i % 31) + 1).padStart(2, '0')}`)
+              .filter((event) => event.date === `2025-04-${String((i % 30) + 1).padStart(2, '0')}`)
               .map((event) => (
                 <div
                   key={event.id}

@@ -3,7 +3,7 @@ import { SolarData } from './types';
 
 export const fetchSolarData = async (): Promise<SolarData[]> => {
   try {
-    const response = await fetch('/data/solar_weather_demo_0607.csv');
+    const response = await fetch('/data/solar_weather_demo_homepage.csv');
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }

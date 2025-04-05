@@ -31,7 +31,7 @@ const HomePage = () => {
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
 
-      <main className="flex-1 p-6 max-w-7xl mx-auto space-y-6">
+      <main className="flex-1 p-6 max-w-7xl mx-auto space-y-1">
         {/* Top Section */}
         <div className="grid md:grid-cols-3 gap-4">
           <div className="md:col-span-2">
@@ -43,7 +43,7 @@ const HomePage = () => {
         </div>
 
         {/* New Row for Chart and XAI */}
-        <div className="grid md:grid-cols-[70%_30%] gap-4"> {/* 70% and 30% columns */}
+        <div className="grid md:grid-cols-[70%_30%] gap-2"> {/* 70% and 30% columns */}
           <div>
             <EnergyChart data={data} />
           </div>

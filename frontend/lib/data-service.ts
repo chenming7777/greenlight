@@ -22,14 +22,19 @@ const parseCSV = (csv: string): SolarData[] => {
   return lines.slice(1).map((line) => {
     const values = line.split(',');
     const obj = headers.reduce((acc, header, index) => {
-      if (header === 'Energy delta[Wh]') {
+      if (header === 'Energy delta_Wh') {
         acc['energy'] = parseFloat(values[index]) || 0;
       } else if (
         ['GHI', 'temp', 'pressure', 'humidity', 'wind_speed', 'rain_1h', 'clouds_all'].includes(header)
       ) {
         acc[header] = parseFloat(values[index]) || 0;
       } else if (header === 'Time') {
-        acc[header] = new Date(values[index]);
+        // ✅ Fix date parsing for "YYYY-MM-DD HH:mm:ss" format
+        const dateString = values[index].replace(' ', 'T'); // Add 'T' for ISO compliance
+        const date = new Date(dateString);
+        console.log(`Parsing "${values[index]}" → ${date}`); 
+        acc[header] = date;
+
       } else {
         acc[header] = values[index];
       }

@@ -1,4 +1,3 @@
-// components/home_dashboard/energy_chart/energy_chart.tsx
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -9,7 +8,9 @@ import {
   Title,
   Tooltip,
   Legend,
+  TimeScale
 } from 'chart.js';
+import 'chartjs-adapter-date-fns';
 import styles from './energy_chart.module.css';
 import { SolarData } from '@/lib/types';
 
@@ -20,56 +21,98 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  TimeScale
 );
 
 interface Props {
   data: SolarData[];
+  startDate: Date | null;
+  endDate: Date | null;   
 }
 
-const EnergyChart = ({ data }: Props) => {
-  const chartData = {
-    labels: data.map((d) =>
-      `${d.Time.getHours()}:${d.Time.getMinutes().toString().padStart(2, '0')}`
-    ),
-    datasets: [
-      {
-        label: 'Actual Generation',
-        data: data.map((d) => d.energy), // Updated
-        borderColor: '#4CAF50',
-        backgroundColor: 'rgba(76, 175, 80, 0.2)',
-        tension: 0.4,
-      },
-      {
-        label: 'Predicted Generation',
-        data: data.map((d) => d.GHI * 0.85), // Example prediction formula
-        borderColor: '#FFA726',
-        backgroundColor: 'rgba(255, 167, 38, 0.2)',
-        tension: 0.4,
-      },
-    ],
+const EnergyChart = ({ data, startDate, endDate }: Props) => {
+  if (!startDate || !endDate || data.length === 0) {
+    return <div className={styles.emptyState}>No data available for this range</div>;
+  }
+
+  const timeOptions = {
+    unit: 'day' as const,
+    stepSize: 1,
+    displayFormats: {
+      day: 'MMM d',
+      hour: 'ha'
+    },
+    min: startDate.getTime(),
+    max: endDate.getTime()
   };
 
   return (
     <div className={styles.chartContainer}>
       <Line
-        data={chartData}
+        data={{
+          datasets: [
+            {
+              label: 'Actual Generation',
+              data: data.map(d => ({ x: d.Time, y: d.energy })),
+              borderColor: '#4CAF50',
+              backgroundColor: 'rgba(76, 175, 80, 0.2)',
+              tension: 0.4,
+              pointRadius: 0,
+              borderWidth: 2
+            },
+            {
+              label: 'Predicted Generation',
+              data: data.map(d => ({ x: d.Time, y: d.GHI * 0.85 })),
+              borderColor: '#FFA726',
+              backgroundColor: 'rgba(255, 167, 38, 0.2)',
+              tension: 0.4,
+              pointRadius: 0,
+              borderWidth: 2
+            }
+          ]
+        }}
         options={{
           maintainAspectRatio: false,
           scales: {
             x: {
-              type: 'category',
-              title: { display: true, text: 'Time (15-min intervals)' },
+              type: 'time',
+              time: timeOptions,
+              ticks: {
+                autoSkip: true,
+                maxRotation: 0
+              },
+              title: {
+                display: true,
+                text: 'Time'
+              },
+              grid: {
+                display: false
+              }
             },
             y: {
               type: 'linear',
-              title: { display: true, text: 'Energy (Wh)' },
-            },
+              title: {
+                display: true,
+                text: 'Energy (Wh)'
+              },
+              beginAtZero: true
+            }
           },
           plugins: {
-            legend: { position: 'top' },
-            tooltip: { mode: 'index' },
+            legend: {
+              position: 'top'
+            },
+            tooltip: {
+              mode: 'index',
+              intersect: false
+            }
           },
+          elements: {
+            line: {
+              fill: true
+            }
+          }
         }}
       />
     </div>

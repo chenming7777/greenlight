@@ -51,7 +51,7 @@ export const parseCSV = (csvData: string): SolarDataEntry[] => {
     dynamicTyping: true,
     skipEmptyLines: true,
     transformHeader: (header) => {
-      if (header === 'Energy delta[Wh]') return 'energy'; // Create alias
+      if (header === 'Energy delta_Wh') return 'energy'; // Create alias
       return header.replace(/ /g, '_');
     }
   });

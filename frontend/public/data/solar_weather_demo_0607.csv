@@ -1,4 +1,4 @@
-Time,Energy delta[Wh],GHI,temp,pressure,humidity,wind_speed,rain_1h,clouds_all
+Time,Energy delta_Wh,GHI,temp,pressure,humidity,wind_speed,rain_1h,clouds_all
 2018-06-06 00:00:00,0,0.0,9.2,1018,78,4.2,0.0,0
 2018-06-06 00:15:00,0,0.0,9.2,1018,78,4.2,0.0,0
 2018-06-06 00:30:00,0,0.0,9.2,1018,78,4.2,0.0,0

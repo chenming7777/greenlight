@@ -8,10 +8,10 @@ import {
   CloudRain,
   Cloud,
 } from 'lucide-react';
-import { SolarData } from '@/lib/types';
+import { WeatherData } from '@/lib/types';
 
 interface Props {
-  data: SolarData;
+  data: WeatherData;
 }
 
 const WeatherConditions = ({ data }: Props) => {

@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Building2, PieChart, Zap, Sun, Lightbulb, Bell, Settings, LogOut } from 'lucide-react'
+import { LayoutDashboard, Building2, PieChart, Zap, Sun, Lightbulb, Bell, FlaskConical } from 'lucide-react'
 
 export default function Sidebar() {
   const pathname = usePathname()
@@ -16,6 +16,7 @@ export default function Sidebar() {
     { id: 'system', icon: Zap, label: 'System Care', href: '/system_care' },
     { id: 'solar', icon: Sun, label: 'Solar Insights', href: '/solar_insights' },
     { id: 'smart', icon: Lightbulb, label: 'Smart Solution', href: '/smart_assistance' },
+    { id: 'laboratory',icon: FlaskConical, label: 'Laboratory', href: '/laboratory' },
   ]
 
   return (

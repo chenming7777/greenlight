@@ -3,7 +3,7 @@ import { SolarData } from './types';
 
 export const fetchSolarData = async (): Promise<SolarData[]> => {
   try {
-    const response = await fetch('/data/solar_weather_demo_homepage.csv');
+    const response = await fetch('./data/solar_weather_demo_homepage.csv');
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -24,16 +24,21 @@ const parseCSV = (csv: string): SolarData[] => {
     const obj = headers.reduce((acc, header, index) => {
       if (header === 'Energy delta_Wh') {
         acc['energy'] = parseFloat(values[index]) || 0;
+      } else if (header.trim() === 'predicted_energy') {
+        acc['predicted_energy'] = parseFloat(values[index]) || 0;
       } else if (
         ['GHI', 'temp', 'pressure', 'humidity', 'wind_speed', 'rain_1h', 'clouds_all'].includes(header)
       ) {
         acc[header] = parseFloat(values[index]) || 0;
       } else if (header === 'Time') {
-        // ✅ Fix date parsing for "YYYY-MM-DD HH:mm:ss" format
-        const dateString = values[index].replace(' ', 'T'); // Add 'T' for ISO compliance
-        const date = new Date(dateString);
-        console.log(`Parsing "${values[index]}" → ${date}`); 
-        acc[header] = date;
+        const [datePart, timePart] = values[index].split(' ');
+        
+        const timeComponents = timePart?.split(':') || ['0', '0'];
+        const [hour, minute] = timeComponents.map(Number);
+        
+        const [day, month, year] = datePart.split('/').map(Number);
+        
+        acc[header] = new Date(year, month - 1, day, hour, minute);
 
       } else {
         acc[header] = values[index];

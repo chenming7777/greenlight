@@ -10,12 +10,12 @@ import * as z from "zod";
 const schema = z.object({
   GHI: z.number().min(0),
   temp: z.number(),
-  pressure: z.number().min(900).max(1100),
+  pressure: z.number().min(0),
   humidity: z.number().min(0).max(100),
   wind_speed: z.number().min(0),
   rain_1h: z.number().min(0),
   clouds_all: z.number().min(0).max(100),
-  Year: z.number().int().min(2000),
+  Year: z.number().int(),
   Month_num: z.number().int().min(1).max(12),
   DayOfYear: z.number().int().min(1).max(366),
   Minute: z.number().int().min(0).max(59),
@@ -23,8 +23,8 @@ const schema = z.object({
   Season: z.number().int().min(1).max(4),
   Day: z.number().int().min(1).max(7),
   Week_cos: z.number().min(-1).max(1),
-  Energy_lag_1: z.number(),
-  Energy_lag_2: z.number(),
+  Energy_lag_1: z.number().min(0),
+  Energy_lag_2: z.number().min(0),
 });
 
 type FormValues = z.infer<typeof schema>;

@@ -28,7 +28,7 @@ ChartJS.register(
 interface Props {
   data: SolarData[];
   startDate: Date | null;
-  endDate: Date | null;   
+  endDate: Date | null;
 }
 
 const EnergyChart = ({ data, startDate, endDate }: Props) => {
@@ -63,7 +63,7 @@ const EnergyChart = ({ data, startDate, endDate }: Props) => {
             },
             {
               label: 'Predicted Generation',
-              data: data.map(d => ({ x: d.Time, y: d.GHI * 0.85 })),
+              data: data.map(d => ({ x: d.Time, y: d.predicted_energy })),
               borderColor: '#FFA726',
               backgroundColor: 'rgba(255, 167, 38, 0.2)',
               tension: 0.4,
@@ -92,11 +92,10 @@ const EnergyChart = ({ data, startDate, endDate }: Props) => {
             },
             y: {
               type: 'linear',
-              title: {
-                display: true,
-                text: 'Energy (Wh)'
-              },
-              beginAtZero: true
+              title: { display: true, text: 'Energy (Wh)' },
+              beginAtZero: true,
+              suggestedMin: 0,
+              suggestedMax: 4500
             }
           },
           plugins: {

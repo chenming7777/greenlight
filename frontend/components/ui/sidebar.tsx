@@ -12,7 +12,6 @@ export default function Sidebar() {
   const menuItems = [
     { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard', href: '/homepage_dashboard' },
     { id: 'virtual-tour', icon: Building2, label: 'Digital Twin', href: '/digital_twin' },
-    { id: 'financial', icon: PieChart, label: 'Financial Overview', href: '/financial' },
     { id: 'system', icon: Zap, label: 'System Care', href: '/system_care' },
     { id: 'solar', icon: Sun, label: 'Solar Insights', href: '/solar_insights' },
     { id: 'smart', icon: Lightbulb, label: 'Smart Solution', href: '/smart_assistance' },
@@ -50,7 +49,6 @@ export default function Sidebar() {
         </ul>
       </nav>
       <div className="p-4 border-t">
-        ...
         <div className="bg-green-100 rounded-lg p-4 mb-4">
           <h3 className="font-medium mb-1 text-black">Need help?</h3>
           <p className="text-sm text-gray-600 mb-2">Please check our docs</p>
@@ -60,7 +58,6 @@ export default function Sidebar() {
             </button>
           </Link>
         </div>
-        ...
         <ul className="space-y-2">
           <li>
             <Link

@@ -8,8 +8,8 @@ interface Props {
 }
 
 const HighlightSection = ({ data }: Props) => {
-  const latest = data[data.length - 1];
   const totalEnergy = data.reduce((sum, d) => sum + d.energy, 0);
+  const average = (totalEnergy / data.length).toFixed(2);
   const peakGeneration = Math.max(...data.map((d) => d.energy));
   const co2Saved = (totalEnergy * 0.0005).toFixed(2);
 
@@ -24,8 +24,8 @@ const HighlightSection = ({ data }: Props) => {
         <div className={styles.column}>
           <div className={styles.metric}>
             <Bolt className="text-yellow-500" size={32} />
-            <div className={styles.value}>{latest?.energy || 0} Wh</div>
-            <div className={styles.label}>Current Generation</div>
+            <div className={styles.value}>{average || 0} Wh</div>
+            <div className={styles.label}>Average Generation</div>
           </div>
 
           <div className={styles.metric}>

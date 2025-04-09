@@ -7,7 +7,7 @@ import HighlightSection from '@/components/home_dashboard/highlights/highlights'
 import EnergyChart from '@/components/home_dashboard/energy_chart/energy_chart';
 import WeatherConditions from '@/components/home_dashboard/weather_conditions/weather_conditions';
 import XAIExplanation from '@/components/home_dashboard/xai_explanation/xai_explanation';
-import { WeatherData } from '@/lib/types';
+import { WeatherData  } from '@/lib/types';
 
 
 const HomePage = () => {
@@ -36,14 +36,15 @@ const HomePage = () => {
       wind_speed: parseFloat((data.reduce((acc, d) => acc + d.wind_speed, 0) / data.length).toFixed(1)),
       rain_1h: parseFloat((data.reduce((acc, d) => acc + d.rain_1h, 0) / data.length).toFixed(1)),
       clouds_all: Math.round(data.reduce((acc, d) => acc + d.clouds_all, 0) / data.length),
-      Time: data[data.length - 1].Time // Use latest timestamp
+      Time: data[data.length - 1].Time 
     }
   : null;
 
-  // Set fixed time range (24 hours by default)
+
+
   const getTimeRange = () => {
-    const startDate = new Date('2018-06-01T00:00:00');
-    const endDate = new Date('2018-06-07T23:59:59');
+    const startDate = new Date('2018-06-01T00:00:00'); 
+    const endDate = new Date('2018-06-07T23:59:59');  
     return { startDate, endDate };
   };
 
@@ -91,7 +92,7 @@ const HomePage = () => {
             />
           </div>
           <div>
-            <XAIExplanation />
+            <XAIExplanation/>
           </div>
         </div>
       </main>

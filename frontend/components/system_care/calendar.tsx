@@ -123,7 +123,7 @@ export function Calendar() {
               </Select>
             </div>
             <div className="flex justify-end mt-4">
-              <Button className="mr-2 text-black" onClick={() => setShowModal(false)}>Cancel</Button>
+              <Button className="bg-gray-200 hover:bg-gray-400 mr-2 text-black" onClick={() => setShowModal(false)}>Cancel</Button>
               <Button className="bg-blue-600 hover:bg-blue-700" onClick={handleAddEvent}>Add</Button>
             </div>
           </div>

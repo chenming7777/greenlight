@@ -1,7 +1,7 @@
 'use client';
 
 import React, { Suspense, useRef, useState, useEffect } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useTexture, Environment } from '@react-three/drei';
 import * as THREE from 'three';
 
@@ -59,7 +59,6 @@ export const parseCSV = (csvData: string): SolarDataEntry[] => {
 };
 
 
-
 // Solar Data Simulator
 const SolarDataSimulator = ({
   setSolarData,
@@ -104,7 +103,6 @@ const SolarDataSimulator = ({
 
   return null;
 };
-
 
 
 // Data Item component
@@ -260,8 +258,6 @@ const GrassTerrain = () => {
 };
 
 
-
-
 // Sensor Stand component
 const SensorStand = ({
   onClick // No event parameter needed
@@ -315,26 +311,22 @@ const SensorStand = ({
 };
 
 
-
 // The main digital twins component
 const DigitalTwinsModel: React.FC = () => {
-  // Inside DigitalTwinsModel component:
   // For panel
   const panelGroupRef = useRef<THREE.Group>(null);
   // Configuration panel
   const panelConfig = {
     rows: 5,
     columns: 6,
-    panelWidth: 2, // Doubled size
+    panelWidth: 2, 
     panelHeight: 2,
-    spacing: 2.5 // Increased spacing
+    spacing: 2.5 
   };
 
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
 
 
-
-  // NEW STATE DECLARATIONS - Add here
   const [selectedPanel, setSelectedPanel] = useState<{
     position: [number, number, number];
     isBroken: boolean;
@@ -419,7 +411,7 @@ const DigitalTwinsModel: React.FC = () => {
       <Suspense fallback={<div>Loading Solar Digital Twins...</div>}>
         <Canvas
           camera={{
-            position: [0, 8, 15], // Adjusted position
+            position: [0, 8, 15],
             fov: 45
           }}
           style={{ background: '#87CEEB' }}
@@ -440,11 +432,6 @@ const DigitalTwinsModel: React.FC = () => {
             shadow-bias={-0.001}
             ref={lightRef}
           />
-
-
-
-
-
 
           {/* Realistic Grass Terrain */}
           <GrassTerrain />
@@ -469,17 +456,17 @@ const DigitalTwinsModel: React.FC = () => {
             historicalData={historicalData}
             currentIndex={currentIndex}
             setCurrentIndex={setCurrentIndex}
-            setCurrentTime={setCurrentTime} // Add this prop
+            setCurrentTime={setCurrentTime} 
           />
 
           <SolarDataSimulator
             setSolarData={setSolarData}
-            isActive={historicalData.length > 0} // CHANGED: Use data presence instead of solarData
+            isActive={historicalData.length > 0} 
             isBroken={selectedPanel?.isBroken || false}
             historicalData={historicalData}
             currentIndex={currentIndex}
             setCurrentIndex={setCurrentIndex}
-            selectedPanel={selectedPanel} // Pass the state here
+            selectedPanel={selectedPanel} 
           />
 
           {/* Environment sensor */}
